@@ -72,6 +72,14 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.testing)
     implementation(libs.google.gson)
+    implementation(libs.koin.android)
+//    implementation(libs.koin.annotations)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.android.compat)
+    implementation(libs.koin.androidx.workmanager)
+
     ksp(libs.room.compiler)
+//    ksp(libs.koin.ksp.compiler)
+
 
 }

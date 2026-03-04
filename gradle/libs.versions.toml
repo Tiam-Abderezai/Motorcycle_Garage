@@ -11,6 +11,9 @@ composeBom = "2024.09.00"
 roomVersion = "2.5.0"
 gsonVersion = "2.10.1"
 kspVersion = "2.0.21-1.0.25"
+koinVersion = "4.1.1"
+koin-annotations-Version = "2.3.1"
+
 
 navigationRuntimeKtx = "2.9.7"
 navigationCompose = "2.9.7"
@@ -37,6 +40,14 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinVersion" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinVersion" }
+koin-android-compat = { group = "io.insert-koin", name = "koin-android-compat", version.ref = "koinVersion" }
+koin-androidx-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koinVersion" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koinVersion" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koinVersion" }
+#koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations-Version" }
+koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations-Version" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
