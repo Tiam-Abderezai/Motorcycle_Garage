@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MotorcycleGarageTheme {
                 Surface() {
-                    ApplicationScreen()
+                    MainApplicationScreen()
                 }
             }
         }

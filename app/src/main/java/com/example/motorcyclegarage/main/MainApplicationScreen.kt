@@ -23,7 +23,7 @@ var addButtonClicked by mutableStateOf(false)
 const val USER_ID_KEY = "userId"
 
 @Composable
-fun ApplicationScreen() {
+fun MainApplicationScreen() {
 // Show the list of Motorcycles
 
     val navController = rememberNavController()
