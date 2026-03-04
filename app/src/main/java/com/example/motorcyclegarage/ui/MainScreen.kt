@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.motorcyclegarage.R
-import com.example.motorcyclegarage.addButtonClicked
+import com.example.motorcyclegarage.main.addButtonClicked
 import com.example.motorcyclegarage.motorcycle.MotorcycleItem
 import com.example.motorcyclegarage.motorcycle.Screen
 import com.example.motorcyclegarage.motorcycle.model.Motorcycle

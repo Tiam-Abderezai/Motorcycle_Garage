@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.motorcyclegarage.addButtonClicked
+import com.example.motorcyclegarage.main.addButtonClicked
 import com.example.motorcyclegarage.motorcycle.model.Manufacturer
 import com.example.motorcyclegarage.motorcycle.model.manufacturerList
 

@@ -1,14 +1,12 @@
-package com.example.motorcyclegarage
+package com.example.motorcyclegarage.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.motorcyclegarage.motorcycle.Screen
 import com.example.motorcyclegarage.motorcycle.crud.AddMotorcycleScreen
 import com.example.motorcyclegarage.motorcycle.model.motorList
