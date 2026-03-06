@@ -1,7 +1,9 @@
-package com.example.motorcyclegarage.main
+package com.example.motorcyclegarage.ui.main
 
 import android.app.Application
+import com.example.motorcyclegarage.di.repositoryModule
 import com.example.motorcyclegarage.di.roomDatabaseModule
+import com.example.motorcyclegarage.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -16,12 +18,11 @@ class MainApplication : Application() {
             androidLogger()
             androidContext(this@MainApplication)
             modules(
-//                apiModule,
-//                networkModule,
-//                repositoryModule,
-//                viewModelModule,
+                repositoryModule,
+                viewModelModule,
                 roomDatabaseModule
             )
         }
+        println("TIAMM MainApplication")
     }
 }

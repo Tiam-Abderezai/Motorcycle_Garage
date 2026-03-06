@@ -1,4 +1,4 @@
-package com.example.motorcyclegarage.motorcycle
+package com.example.motorcyclegarage.ui.motorcycle.ui
 
 
 import androidx.compose.foundation.Image
@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.motorcyclegarage.motorcycle.model.Motorcycle
+import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 
 /* MotorcycleItem() shows one individual item of a MotorCycle object
 * inside the LazyColumn list of the MainScreen

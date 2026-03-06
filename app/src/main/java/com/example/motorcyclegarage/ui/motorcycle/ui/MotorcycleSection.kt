@@ -1,4 +1,4 @@
-package com.example.motorcyclegarage.motorcycle
+package com.example.motorcyclegarage.ui.motorcycle.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.motorcyclegarage.motorcycle.model.Motorcycle
+import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 
 @Composable
 fun MotorcycleSection(motor: Motorcycle) {
@@ -26,16 +26,16 @@ fun MotorcycleSection(motor: Motorcycle) {
                     painter = painterResource(id = motor.logo),
                     contentDescription = null
                 )
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(id = motor.image),
-                    contentDescription = null
-                )
+//                Image(
+//                    modifier = Modifier.fillMaxSize(),
+////                    painter = painterResource(id = motor.image),
+//                    contentDescription = null
+//                )
                 Text(text = "MANUFACTURER: ${motor.manufacturer}")
-                Text(text = "MODEL: ${motor.model.name}")
-                Text(text = "YEAR: ${motor.model.name}")
-                Text(text = "POWER: ${motor.model.power}")
-                Text(text = "TYPE: ${motor.model.type}")
+                Text(text = "MODEL: ${motor.model?.name}")
+                Text(text = "YEAR: ${motor.model?.name}")
+                Text(text = "POWER: ${motor.model?.power}")
+                Text(text = "TYPE: ${motor.model?.type}")
             }
         }
     }

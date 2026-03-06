@@ -11,7 +11,7 @@ composeBom = "2024.09.00"
 roomVersion = "2.5.0"
 gsonVersion = "2.10.1"
 kspVersion = "2.0.21-1.0.25"
-koinVersion = "4.1.1"
+koinVersion = "3.5.3"
 koin-annotations-Version = "2.3.1"
 
 

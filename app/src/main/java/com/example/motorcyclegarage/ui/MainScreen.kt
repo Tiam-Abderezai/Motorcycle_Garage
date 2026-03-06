@@ -23,14 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.motorcyclegarage.R
-import com.example.motorcyclegarage.main.addButtonClicked
-import com.example.motorcyclegarage.motorcycle.MotorcycleItem
-import com.example.motorcyclegarage.motorcycle.Screen
-import com.example.motorcyclegarage.motorcycle.model.Motorcycle
+import com.example.motorcyclegarage.ui.main.addButtonClicked
+import com.example.motorcyclegarage.ui.motorcycle.ui.MotorcycleItem
+import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
+import com.example.motorcyclegarage.ui.motorcycle.ui.Route
 
 
 @Composable
-fun MainScreen(motorList: ArrayList<Motorcycle>, navController: NavHostController) {
+fun MainScreen(navController: NavHostController) {
 
     Box(
         modifier = Modifier
@@ -46,9 +46,9 @@ fun MainScreen(motorList: ArrayList<Motorcycle>, navController: NavHostControlle
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                itemsIndexed(motorList) { index, motor ->
-                    MotorcycleItem(motor)
-                }
+//                itemsIndexed(motorcycleList) { index, motor ->
+//                    MotorcycleItem(motor)
+//                }
             }
 
         }
@@ -62,7 +62,7 @@ fun MainScreen(motorList: ArrayList<Motorcycle>, navController: NavHostControlle
             })
         }
     }
-    if (addButtonClicked) navController.navigate(Screen.AddMotorcycleScreen.route)
+    if (addButtonClicked) navController.navigate(Route.AddMotorcycleScreen.name)
 }
 
 @ExperimentalMaterial3Api

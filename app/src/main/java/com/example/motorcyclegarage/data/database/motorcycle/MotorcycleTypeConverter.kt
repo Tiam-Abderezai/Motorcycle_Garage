@@ -1,24 +1,24 @@
-package com.example.motorcyclegarage.database
+package com.example.motorcyclegarage.data.database.motorcycle
 
 import androidx.room.TypeConverter
-import com.example.motorcyclegarage.motorcycle.model.Manufacturer
-import com.example.motorcyclegarage.motorcycle.model.Model
-import com.example.motorcyclegarage.motorcycle.model.Motorcycle
+import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
+import com.example.motorcyclegarage.data.model.motorcycle.Model
+import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-object ModelListTypeConverter {
+object MotorcycleTypeConverter {
 
     private val gson = Gson()
 
     // --- Model ---
     @TypeConverter
-    fun fromModel(model: Model?): String? =
-        model?.let { gson.toJson(it) }
+    fun fromMotorcycle(motor: Motorcycle?): String? =
+        motor?.let { gson.toJson(it) }
 
     @TypeConverter
-    fun toModel(json: String?): Model? =
-        json?.let { gson.fromJson(it, Model::class.java) }
+    fun toMotorcycle(json: String?): Motorcycle? =
+        json?.let { gson.fromJson(it, Motorcycle::class.java) }
 
     // --- Manufacturer ---
     @TypeConverter
@@ -41,4 +41,13 @@ object ModelListTypeConverter {
         val type = object : TypeToken<List<Model>>() {}.type
         return gson.fromJson(json, type)
     }
+
+    // --- Model ---
+    @TypeConverter
+    fun fromModel(model: Model?): String? =
+        model?.let { gson.toJson(it) }
+
+    @TypeConverter
+    fun toModel(json: String?): Model? =
+        json?.let { gson.fromJson(it, Model::class.java) }
 }

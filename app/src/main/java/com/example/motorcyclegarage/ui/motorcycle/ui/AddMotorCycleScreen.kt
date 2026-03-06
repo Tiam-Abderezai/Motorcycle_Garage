@@ -1,4 +1,4 @@
-package com.example.motorcyclegarage.motorcycle.crud
+package com.example.motorcyclegarage.ui.motorcycle.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.motorcyclegarage.main.addButtonClicked
-import com.example.motorcyclegarage.motorcycle.model.Manufacturer
-import com.example.motorcyclegarage.motorcycle.model.manufacturerList
+import com.example.motorcyclegarage.ui.main.addButtonClicked
+import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
+import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.manufacturerList
 
 var isManufacturerClicked by mutableStateOf(false)
 var isModelClicked by mutableStateOf(false)
@@ -71,9 +71,9 @@ private fun SelectManufacturerMenu() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        itemsIndexed(manufacturerList) { index, manu ->
-            ManufacturerMenuItem(manu)
-        }
+//        itemsIndexed(manufacturerList) { index, manu ->
+//            ManufacturerMenuItem(manu)
+//        }
 
     }
 }
@@ -113,32 +113,32 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        itemsIndexed(manufacturer.models) { index, model ->
-            Image(
-                modifier = Modifier
-                    .width(128.dp)
-                    .height(128.dp)
-                    .clickable {
-                        isModelClicked = true
-                        selectedModelIndex = index
-                    },
-                painter = painterResource(id = model.image),
-                contentDescription = null,
-            )
-            Spacer(
-                modifier = Modifier
-                    .background(Color.DarkGray)
-                    .width(128.dp)
-                    .height(2.dp)
-            )
-        }
+//        itemsIndexed(manufacturer.models) { index, model ->
+//            Image(
+//                modifier = Modifier
+//                    .width(128.dp)
+//                    .height(128.dp)
+//                    .clickable {
+//                        isModelClicked = true
+//                        selectedModelIndex = index
+//                    },
+//                painter = painterResource(id = model.image),
+//                contentDescription = null,
+//            )
+//            Spacer(
+//                modifier = Modifier
+//                    .background(Color.DarkGray)
+//                    .width(128.dp)
+//                    .height(2.dp)
+//            )
+//        }
 
     }
     if (isModelClicked) {
         Text(text = "MANUFACTURER: ${manufacturer.name}")
-        Text(text = "MODEL: ${manufacturer.models[selectedModelIndex].name}")
-        Text(text = "YEAR: ${manufacturer.models[selectedModelIndex].year}")
-        Text(text = "POWER: ${manufacturer.models[selectedModelIndex].power}")
-        Text(text = "TYPE: ${manufacturer.models[selectedModelIndex].type}")
+//        Text(text = "MODEL: ${manufacturer.models[selectedModelIndex].name}")
+//        Text(text = "YEAR: ${manufacturer.models[selectedModelIndex].year}")
+//        Text(text = "POWER: ${manufacturer.models[selectedModelIndex].power}")
+//        Text(text = "TYPE: ${manufacturer.models[selectedModelIndex].type}")
     }
 }
