@@ -190,7 +190,7 @@ fun MotorcycleItemSection(
 
                     Column(
                         modifier = Modifier
-                            .background(Color.DarkGray)
+                            .background(Color(0xFF535353)) // Todo Declare this into a variable
                             .fillMaxWidth()
 
                     ) {
