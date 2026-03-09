@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.motorcyclegarage.common.logger.BaseLogger
 import com.example.motorcyclegarage.common.logger.FactoryLogger
+import com.example.motorcyclegarage.data.model.manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.example.motorcyclegarage.data.repositories.MotorcycleListRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,9 +43,11 @@ class MotorcycleListViewModel(
                 motorcycleListRepositoryImpl.allMotorcycles
                     // Collect from allMotorcycles repository-impl
                     .collect { motorList ->
+                        // Sort motorcycle list by manufacturer id
+                        val sortedMotorcycleList = motorList.sortedBy { it.manufacturer.id }
                         // Pass collected motorList to Complete UI state and post it to mutable state flow
                         logger.debug("getAllMotorcycles() - motorList.size: ${motorList.size}")
-                        _state.value = MotorcycleListState.Complete(motorcycleList = motorList)
+                        _state.value = MotorcycleListState.Complete(motorcycleList = sortedMotorcycleList)
                     }
             } catch (e: Exception) {
                 logger.debug("getAllMotorcycles() - Exception: ${e.message}")

@@ -1,12 +1,21 @@
 package com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.item
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,10 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,11 +43,12 @@ import com.example.motorcyclegarage.common.logger.FactoryLogger
 import com.example.motorcyclegarage.common.motorcycleDummy
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.example.motorcyclegarage.ui.components.DeleteMessage
-import com.example.motorcyclegarage.ui.components.Route
+import com.example.motorcyclegarage.ui.dialog.AlertDialog
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListEvent
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+
 
 private var isDeleteClicked by mutableStateOf(false)
 private var selectedMotorcycleItem by mutableStateOf(motorcycleDummy)
@@ -43,6 +57,7 @@ private val logger: BaseLogger = FactoryLogger.getLoggerCompose("MotorcycleItemS
 
 @Composable
 fun MotorcycleItemSection(
+    modifier: Modifier,
     motorcycle: Motorcycle,
     motorcycleListState: MotorcycleListState,
     motorcycleListEvent: suspend (MotorcycleListEvent) -> Unit,
@@ -50,113 +65,223 @@ fun MotorcycleItemSection(
     index: Int
 ) {
     logger.debug("MotorcycleItemSection - Displaying motorcycle: ${motorcycle.manufacturer.name} ${motorcycle.model?.name}")
+    var showDialog by remember { mutableStateOf(false) }
 
-    Box() {
+    // Staggered entrance animation delay based on index
+    val entranceDelay = index * 100L
+
+    // Animation state for initial appearance
+    var isVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(entranceDelay)
+        isVisible = true
+    }
+
+    // Fade animation
+    val alpha by animateFloatAsState(
+        targetValue = if (isVisible) 1f else 0f,
+        animationSpec = tween(durationMillis = 500),
+        label = "fadeAnimation"
+    )
+
+    // Slide up animation
+    val offsetY by animateDpAsState(
+        targetValue = if (isVisible) 0.dp else 50.dp,
+        animationSpec = tween(durationMillis = 500),
+        label = "slideAnimation"
+    )
+
+    // Scale animation for delete button
+    var isDeleteHovered by remember { mutableStateOf(false) }
+    val deleteButtonScale by animateFloatAsState(
+        targetValue = if (isDeleteHovered) 1.1f else 1f,
+        animationSpec = tween(durationMillis = 200),
+        label = "deleteButtonScale"
+    )
+
+    // Content scale animation when deleting
+    val contentScale by animateFloatAsState(
+        targetValue = if (isDeleteClicked && motorcycle.id == selectedMotorcycleItem.id) 0.9f else 1f,
+        animationSpec = tween(durationMillis = 300),
+        label = "contentScale"
+    )
+
+    Box(
+        modifier = modifier
+            .alpha(alpha)
+            .offset(y = offsetY)
+            .graphicsLayer {
+                scaleX = contentScale
+                scaleY = contentScale
+            }
+    ) {
         Row(
             modifier = Modifier
+                .background(Color.Transparent)
                 .fillMaxSize()
         ) {
-            Column() {
-                logger.debug("Displaying manufacturer logo: ${motorcycle.manufacturer.name}")
+            Column(
+                modifier = Modifier
+                    .alpha(alpha)
+            ) {
+                // Logo with subtle pulse animation
+                val logoPulse by animateFloatAsState(
+                    targetValue = if (isVisible) 1.05f else 1f,
+                    animationSpec = tween(durationMillis = 1000),
+                    label = "logoPulse"
+                )
+
                 Image(
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(RoundedCornerShape(16.dp)) // Adds rounded corners (16.dp radius)
+                        .graphicsLayer {
+                            scaleX = logoPulse
+                            scaleY = logoPulse
+                        },
                     painter = painterResource(id = motorcycle.logo),
                     contentDescription = null
                 )
 
-                logger.debug("Displaying motorcycle image: ${motorcycle.model?.name}")
+                // Main image with fade in
                 Image(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(alpha),
                     painter = painterResource(id = motorcycle.image!!),
                     contentDescription = null
                 )
 
-                logger.debug("Rendering delete button for motorcycle ID: ${motorcycle.id}")
+                // Delete button with hover animation
                 ButtonDeleteMotorcycle(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                        .graphicsLayer {
+                            scaleX = deleteButtonScale
+                            scaleY = deleteButtonScale
+                        },
                     onClick = {
                         logger.debug("Delete button clicked for motorcycle ID: ${motorcycle.id}")
-                        isDeleteClicked = true
+                        showDialog = true
                         selectedMotorcycleItem = motorcycle
                     }
                 )
 
-                logger.debug("Displaying motorcycle details")
-                Text(
-                    text = "Manufacturer:",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                // Text with staggered appearance
+                @Composable
+                fun AnimatedText(
+                    label: String,
+                    value: String,
+                    delay: Long,
+                    style: TextStyle
+                ) {
+                    var textVisible by remember { mutableStateOf(false) }
+                    LaunchedEffect(Unit) {
+                        kotlinx.coroutines.delay(entranceDelay + delay)
+                        textVisible = true
+                    }
+
+                    val textAlpha by animateFloatAsState(
+                        targetValue = if (textVisible) 1f else 0f,
+                        animationSpec = tween(durationMillis = 300),
+                        label = "${label}Text"
                     )
+
+                    Column(
+                        modifier = Modifier
+                            .background(Color.DarkGray)
+                            .fillMaxWidth()
+
+                    ) {
+                        Text(
+                            color = Color.Blue,
+                            text = label,
+                            style = style.copy(fontWeight = FontWeight.Bold),
+                            modifier = Modifier.alpha(textAlpha)
+                        )
+                        Text(
+                            color = Color.Yellow,
+                            text = "                          $value",
+                            style = style.copy(fontWeight = FontWeight.SemiBold),
+                            modifier = Modifier.alpha(textAlpha)
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .background(Color.Gray)
+                            .fillMaxSize()
+                            .height(1.dp)
+                    )
+                }
+
+                AnimatedText(
+                    label = "Manufacturer:",
+                    value = motorcycle.manufacturer.name,
+                    delay = 100L,
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
                 )
-                Text(
-                    text = "                          ${motorcycle.manufacturer.name}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                    )
+
+                AnimatedText(
+                    label = "Model:",
+                    value = motorcycle.model?.name ?: "",
+                    delay = 200L,
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
                 )
-                Text(
-                    text = "MODEL:",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
+
+                AnimatedText(
+                    label = "Year:",
+                    value = motorcycle.model?.year ?: "",
+                    delay = 300L,
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
                 )
-                Text(
-                    text = "                          ${motorcycle.model?.name}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                    )
+
+                AnimatedText(
+                    label = "Power:",
+                    value = motorcycle.model?.power ?: "",
+                    delay = 400L,
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
                 )
-                Text(
-                    text = "YEAR:",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                )
-                Text(
-                    text = "                          ${motorcycle.model?.year}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                    )
-                )
-                Text(
-                    text = "POWER:",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                )
-                Text(
-                    text = "                          ${motorcycle.model?.power}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                    )
-                )
-                Text(
-                    text = "TYPE:",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                )
-                Text(
-                    text = "                          ${motorcycle.model?.type}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                    )
+
+                AnimatedText(
+                    label = "Type:",
+                    value = motorcycle.model?.type ?: "",
+                    delay = 500L,
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
                 )
             }
 
-            if (isDeleteClicked && motorcycle.id == selectedMotorcycleItem.id) {
-                logger.debug("Deleting motorcycle with ID: ${motorcycle.id}")
+            if(showDialog && motorcycle.id == selectedMotorcycleItem.id) {
+                AlertDialog(
+                    onDismissRequest = { showDialog = false },  // Called when user clicks outside dialog
+                    onConfirmation = {
+                        isDeleteClicked = true
+                        // Add your confirmation action here
+                        // For example: navController.navigate(SomeRoute)
+                    },
+                    alertDialogTitle = "",
+                    alertDialogDescription = "Are you sure you want to delete a new motorcycle?",
+                    isConfirmationYesOrNo = true
+                )
+            }
+
+            // Delete animation
+            if (isDeleteClicked) {
                 val motorcycleToDelete = selectedMotorcycleItem
+
+                // Fade out and shrink animation
+                val deleteAlpha by animateFloatAsState(
+                    targetValue = 0f,
+                    animationSpec = tween(durationMillis = 300),
+                    label = "deleteFade"
+                )
+
+                val deleteScale by animateFloatAsState(
+                    targetValue = 0.8f,
+                    animationSpec = tween(durationMillis = 300),
+                    label = "deleteScale"
+                )
+
                 LaunchedEffect(Unit) {
                     withContext(Dispatchers.IO) {
                         motorcycleListEvent.invoke(
@@ -165,8 +290,24 @@ fun MotorcycleItemSection(
                         logger.debug("Motorcycle deleted successfully: ${motorcycleToDelete.id}")
                     }
                 }
-                DeleteMessage()
-                isDeleteClicked = false
+
+                Box(
+                    modifier = Modifier
+                        .graphicsLayer {
+                            this.alpha = deleteAlpha
+                            scaleX = deleteScale
+                            scaleY = deleteScale
+                        }
+                ) {
+                    DeleteMessage()
+                }
+
+                // Reset after animation completes
+                LaunchedEffect(deleteAlpha) {
+                    if (deleteAlpha == 0f) {
+                        isDeleteClicked = false
+                    }
+                }
             }
         }
     }
@@ -178,11 +319,26 @@ fun ButtonDeleteMotorcycle(
     modifier: Modifier
 ) {
     logger.debug("ButtonDeleteMotorcycle - Rendered")
+
+    // Button press animation
+    var isPressed by remember { mutableStateOf(false) }
+    val buttonScale by animateFloatAsState(
+        targetValue = if (isPressed) 0.9f else 1f,
+        animationSpec = tween(durationMillis = 100),
+        label = "buttonPress"
+    )
+
     FloatingActionButton(
         modifier = modifier
             .background(Color.DarkGray)
-            .size(64.dp),
-        onClick = onClick
+            .size(64.dp)
+            .graphicsLayer {
+                scaleX = buttonScale
+                scaleY = buttonScale
+            },
+        onClick = onClick,
+        containerColor = Color.LightGray,  // Changed background color to Gray
+        contentColor = Color.DarkGray    // Ensures icon remains visible
     ) {
         Icon(
             painterResource(id = R.drawable.icon_delete),

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +25,9 @@ import androidx.compose.ui.window.Dialog
 fun AlertDialog(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
-    imageDescription: String,
+    alertDialogTitle: String,
+    alertDialogDescription: String,
+    isConfirmationYesOrNo: Boolean
 ) {
     Dialog(onDismissRequest = {
         onDismissRequest()
@@ -49,29 +52,39 @@ fun AlertDialog(
 //                    )
                 }
                 Text(
-                    text = "New Update Available",
+                    text = alertDialogTitle,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp),
                 )
 
                 Text(
-                    text = "This is an example of the description of a very beautiful dialog which you may like.",
+                    text = alertDialogDescription,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 8.dp),
                 )
-                Button(
-                    onClick = { onDismissRequest() },
-                    modifier = Modifier.padding(8.dp),
-                ) {
-                    Text("Update Tonight")
-                }
-                TextButton(
-                    onClick = { onConfirmation() },
-                    modifier = Modifier.padding(8.dp),
-                ) {
-                    Text(style = MaterialTheme.typography.bodySmall, text = "View Released Notes")
+                Row() {
+                    if(isConfirmationYesOrNo) {
+                        Button(
+                            onClick = { onConfirmation() },
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            Text("Yes")
+                        }
+                        Button(
+                            onClick = { onDismissRequest() },
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            Text("No")
+                        }
+                    } else
+                        Button(
+                            onClick = { onDismissRequest() },
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            Text("Ok")
+                        }
                 }
             }
         }
