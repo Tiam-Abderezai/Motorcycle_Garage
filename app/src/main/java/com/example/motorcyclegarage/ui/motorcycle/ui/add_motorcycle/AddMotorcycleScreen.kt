@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -46,7 +47,6 @@ import com.example.motorcyclegarage.R
 import com.example.motorcyclegarage.common.logger.BaseLogger
 import com.example.motorcyclegarage.common.logger.FactoryLogger
 import com.example.motorcyclegarage.common.motorcycleDummy
-import com.example.motorcyclegarage.data.model.manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.createManufacturerListTestData
@@ -64,8 +64,8 @@ import kotlinx.coroutines.withContext
 
 private var isManufacturerItemClicked by mutableStateOf(false)
 private var isModelClicked by mutableStateOf(false)
-private var showSaveItemDialog by mutableStateOf(false)
-private var showItemMustBeSelectedDialog by mutableStateOf(false)
+private var showAreYouSureSaveItemDialog by mutableStateOf(false)
+private var showItemMustBeSelectedToSaveDialog by mutableStateOf(false)
 private var isSaveClicked by mutableStateOf(false)
 private var selectedModelIndex by mutableStateOf(0)
 private var selectedManufacturerIndex by mutableStateOf(0)
@@ -160,17 +160,20 @@ fun AddMotorcycleSection(
             ButtonSaveMotorcycle()
             {
                 logger.debug("Save button clicked")
-                if (isModelClicked && manufacturer?.id != selectedManufacturerIndex) {
-                    showSaveItemDialog = true
-                } else showItemMustBeSelectedDialog = true
+                if (isModelClicked) {
+                    showAreYouSureSaveItemDialog = true
+                }
+                if (selectedMotorcycleItem.manufacturer.id != selectedManufacturerIndex) {
+                    showItemMustBeSelectedToSaveDialog = true
+                }
             }
         }
     }
 
-    if (showItemMustBeSelectedDialog) {
+    if (showItemMustBeSelectedToSaveDialog) {
         AlertDialog(
             onDismissRequest = {
-                showItemMustBeSelectedDialog = false
+                showItemMustBeSelectedToSaveDialog = false
             },  // Called when user clicks outside dialog
             onConfirmation = {
                 isSaveClicked = false
@@ -179,14 +182,15 @@ fun AddMotorcycleSection(
             },
             alertDialogTitle = "",
             alertDialogDescription = "You must first select a manufacturer and a model.",
-            isConfirmationYesOrNo = false
+            isConfirmationYesOrNo = false,
+            alertDialogIcon = R.drawable.icon_checked
         )
     }
 
-    if (showSaveItemDialog) {
+    if (showAreYouSureSaveItemDialog) {
         AlertDialog(
             onDismissRequest = {
-                showSaveItemDialog = false
+                showAreYouSureSaveItemDialog = false
             },  // Called when user clicks outside dialog
             onConfirmation = {
                 isSaveClicked = true
@@ -195,7 +199,8 @@ fun AddMotorcycleSection(
             },
             alertDialogTitle = "",
             alertDialogDescription = "Are you sure you want to add a new motorcycle?",
-            isConfirmationYesOrNo = true
+            isConfirmationYesOrNo = true,
+            alertDialogIcon = R.drawable.icon_new
         )
     }
     if (isSaveClicked) {
@@ -212,8 +217,8 @@ fun AddMotorcycleSection(
         SavedMessage()
         navController.popBackStack()
         isSaveClicked = false
-        showSaveItemDialog = false
-        showItemMustBeSelectedDialog = false
+        showAreYouSureSaveItemDialog = false
+        showItemMustBeSelectedToSaveDialog = false
         isModelClicked = false
     }
 }
@@ -270,19 +275,28 @@ fun ManufacturerMenuItem(manufacturer: Manufacturer) {
 private fun SelectModelMenu(manufacturer: Manufacturer) {
     logger.debug("SelectModelMenu - Manufacturer: ${manufacturer.name}")
 
-    LazyColumn(
+    LazyRow(
         modifier = Modifier
-            .background(Color.DarkGray)
-            .size(255.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(Color.Blue)
+            .width(480.dp)
+            .height(320.dp),
+
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(createModelListTestData(manufacturer.id)) { index, model ->
             logger.debug("Displaying model: ${model.name}")
+
+            Icon(
+                painter = painterResource(id = R.drawable.icon_arrow_left),
+                contentDescription = null,
+                tint = Color.Yellow,
+                modifier = Modifier.size(64.dp)
+            )
             Image(
                 modifier = Modifier
-                    .width(128.dp)
-                    .height(128.dp)
+                    .width(328.dp)
+                    .height(255.dp)
                     .background(if (isModelClicked && selectedModelIndex == index) Color.Yellow else Color.DarkGray)
                     .clickable {
                         logger.debug("Model selected: ${model.name}")
@@ -299,11 +313,11 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
                 painter = painterResource(id = model.image),
                 contentDescription = null,
             )
-            Spacer(
-                modifier = Modifier
-                    .background(Color.DarkGray)
-                    .width(128.dp)
-                    .height(2.dp)
+            Icon(
+                painter = painterResource(id = R.drawable.icon_arrow_right),
+                contentDescription = null,
+                tint = Color.Yellow,
+                modifier = Modifier.size(64.dp)
             )
         }
     }
@@ -394,6 +408,7 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
         )
     }
 }
+
 
 @Composable
 fun ButtonSaveMotorcycle(

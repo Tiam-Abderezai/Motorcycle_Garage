@@ -7,13 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.motorcyclegarage.common.logger.BaseLogger
 import com.example.motorcyclegarage.common.logger.FactoryLogger
-import com.example.motorcyclegarage.data.model.manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.example.motorcyclegarage.data.repositories.MotorcycleListRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 private val logger: BaseLogger = FactoryLogger.getLoggerKClass(MotorcycleListViewModel::class)

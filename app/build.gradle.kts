@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.compose.remote.creation.core)
     implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.compose.foundation)
     testImplementation("io.insert-koin:koin-test:3.4.0")
 
     // Coroutines

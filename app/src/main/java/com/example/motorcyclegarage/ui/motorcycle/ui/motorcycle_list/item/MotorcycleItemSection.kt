@@ -195,7 +195,7 @@ fun MotorcycleItemSection(
 
                     ) {
                         Text(
-                            color = Color.Blue,
+                            color = Color.Cyan,
                             text = label,
                             style = style.copy(fontWeight = FontWeight.Bold),
                             modifier = Modifier.alpha(textAlpha)
@@ -261,7 +261,8 @@ fun MotorcycleItemSection(
                     },
                     alertDialogTitle = "",
                     alertDialogDescription = "Are you sure you want to delete a new motorcycle?",
-                    isConfirmationYesOrNo = true
+                    isConfirmationYesOrNo = true,
+                    alertDialogIcon = R.drawable.icon_hand_stop
                 )
             }
 
