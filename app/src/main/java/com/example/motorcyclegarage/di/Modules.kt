@@ -1,37 +1,30 @@
 package com.example.motorcyclegarage.di
 
-import android.content.Context
 import androidx.room.Room
-import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleDAO
-import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleDatabase
-import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleRepository
-import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleRepositoryImpl
-import com.example.motorcyclegarage.ui.motorcycle.ui.MotorcycleViewModel
-import org.koin.android.ext.koin.androidContext
+import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleListDAO
+import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleListDatabase
+import com.example.motorcyclegarage.data.repositories.MotorcycleListRepository
+import com.example.motorcyclegarage.data.repositories.MotorcycleListRepositoryImpl
+import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel {
-        MotorcycleViewModel(repository = get())
+        MotorcycleListViewModel(motorcycleListRepositoryImpl = get())
     }
 }
 
 val repositoryModule = module {
-    fun provideMotorcycleRepository(
-        motorDao: MotorcycleDAO,
-        context: Context
-    ): MotorcycleRepository {
-
-        return MotorcycleRepositoryImpl(motorDao, context)
+    single {
+        MotorcycleListRepositoryImpl(get())
     }
-    println("TIAMM Modules Repository")
-    single { provideMotorcycleRepository(get(), androidContext()) }
 }
 val roomDatabaseModule = module {
     single {
-        Room.databaseBuilder(get(), MotorcycleDatabase::class.java, "MotorcycleDB")
-            .createFromAsset("database/motorcycle_database.db").build()
+        Room.databaseBuilder(get(), MotorcycleListDatabase::class.java, "MotorcycleDB").build()
     }
-    single { get<MotorcycleDatabase>().motorcycleDAO() }
+    single { get<MotorcycleListDatabase>().motorcycleListDAO() }
 }

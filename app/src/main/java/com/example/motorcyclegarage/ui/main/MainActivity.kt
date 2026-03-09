@@ -5,25 +5,34 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
-import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.motorcycleList
+import androidx.compose.runtime.collectAsState
+import com.example.motorcyclegarage.common.logger.BaseLogger
+import com.example.motorcyclegarage.common.logger.FactoryLogger
+import com.example.motorcyclegarage.data.repositories.MotorcycleListRepositoryImpl
 //import com.example.motorcyclegarage.motorcycle.motorcycleList
-import com.example.motorcyclegarage.ui.motorcycle.ui.MotorcycleViewModel
+import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListViewModel
 import com.example.motorcyclegarage.ui.theme.MotorcycleGarageTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+    private val logger: BaseLogger = FactoryLogger.getLoggerKClass(MainActivity::class)
 
-    private val motorcycleViewModel by viewModel<MotorcycleViewModel>()
+    private val motorcycleListViewModel by inject<MotorcycleListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
+            val motorcycleListState = motorcycleListViewModel.state.collectAsState().value
+            val motorcycleListEvent = motorcycleListViewModel::handleMotorcycleListEvent
             MotorcycleGarageTheme {
                 Surface() {
-                    println("TIAMM MainActivity")
-                    MainApplicationScreen()
+                    logger.debug("MotorcycleGarageTheme Surface()")
+                    MainApplicationScreen(
+                        motorcycleListState = motorcycleListState,
+                        motorcycleListEvent = motorcycleListEvent
+                    )
                 }
             }
         }

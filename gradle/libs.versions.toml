@@ -17,6 +17,9 @@ koin-annotations-Version = "2.3.1"
 
 navigationRuntimeKtx = "2.9.7"
 navigationCompose = "2.9.7"
+junitKtx = "1.3.0"
+remoteCreationCore = "1.0.0-alpha05"
+uiGraphics = "1.10.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +51,9 @@ koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koinV
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koinVersion" }
 #koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations-Version" }
 koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations-Version" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+androidx-compose-remote-creation-core = { group = "androidx.compose.remote", name = "remote-creation-core", version.ref = "remoteCreationCore" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

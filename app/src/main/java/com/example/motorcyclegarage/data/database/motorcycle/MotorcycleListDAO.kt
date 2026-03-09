@@ -7,13 +7,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
-
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @Dao
-interface MotorcycleDAO {
+interface MotorcycleListDAO {
 
     @Query("SELECT * FROM motorcycle_table")
-    fun getAllMotorcycles(): List<Motorcycle>
+    fun getAllMotorcycles(): Flow<List<Motorcycle>>
 
     @Query("SELECT * FROM motorcycle_table WHERE motorcycleId = :id")
     fun findMotorcycleById(id: Int): Motorcycle
@@ -24,6 +27,6 @@ interface MotorcycleDAO {
     @Update
     suspend fun updateMotorcycle(motorcycle: Motorcycle)
 
-    @Delete
-    suspend fun deleteMotorcycle(motorcycle: Motorcycle)
+    @Query("DELETE FROM motorcycle_table WHERE motorcycleId = :id")
+    suspend fun deleteMotorcycle(id: Int)
 }

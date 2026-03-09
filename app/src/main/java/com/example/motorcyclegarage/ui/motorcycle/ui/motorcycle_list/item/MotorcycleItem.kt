@@ -1,4 +1,4 @@
-package com.example.motorcyclegarage.ui.motorcycle.ui
+package com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.item
 
 
 import androidx.compose.foundation.Image
@@ -16,12 +16,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.navigation.NavHostController
+import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListEvent
+import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
+
 
 /* MotorcycleItem() shows one individual item of a MotorCycle object
 * inside the LazyColumn list of the MainScreen
 *  */
 @Composable
-fun MotorcycleItem(motor: Motorcycle) {
+fun MotorcycleItem(
+    motorcycle: Motorcycle,
+    motorcycleListState: MotorcycleListState,
+    motorcycleListEvent: suspend (MotorcycleListEvent) -> Unit,
+    navController: NavHostController,
+    index: Int
+) {
     Box() {
         var expandedItemIndex by remember { mutableStateOf(false) }
 
@@ -36,11 +48,25 @@ fun MotorcycleItem(motor: Motorcycle) {
         ) {
             Image(
                 modifier = Modifier.size(64.dp),
-                painter = painterResource(id = motor.logo),
+                painter = painterResource(id = motorcycle.logo),
                 contentDescription = null
             )
-//            Text(text = motor.model)
+            Image(
+                modifier = Modifier.size(64.dp),
+                painter = painterResource(id = motorcycle.image!!),
+                contentDescription = null
+            )
+
+            Text(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = "        ${motorcycle.model?.name!!}")
         }
-        if (expandedItemIndex) MotorcycleSection(motor)
+        if (expandedItemIndex) MotorcycleItemSection(
+            motorcycle,
+            motorcycleListState,
+            motorcycleListEvent,
+            navController,
+            index
+        )
     }
 }

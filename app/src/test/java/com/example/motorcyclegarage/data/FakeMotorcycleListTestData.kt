@@ -1,13 +1,21 @@
-package com.example.motorcyclegarage.motorcycle
+package com.example.motorcyclegarage.data
 
 import com.example.motorcyclegarage.R
 import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Model
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
+import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.BMW
+import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.bmwModels
+import java.util.UUID
+import java.util.concurrent.ThreadLocalRandom
 
-object MotorcycleProvider {
+object FakeMotorcycleListTestData {
+
+    private fun makeRandomString() = UUID.randomUUID().toString()
+    private val randomInt = ThreadLocalRandom.current().nextInt(0, 1000 + 1)
+
     val modelBmwS100RR = Model(
-        id = 1,
+        id = randomInt,
         name = "S 1000 RR",
         manufacturerId = 1,
         image = R.drawable.bmw_model_s1000rr,
@@ -17,7 +25,7 @@ object MotorcycleProvider {
     )
 
     val modelBmwR1250GS = Model(
-        id = 2,
+        id = randomInt,
         name = "R 1250 GS",
         manufacturerId = 1,
         image = R.drawable.bmw_model_r1250gs,
@@ -27,7 +35,7 @@ object MotorcycleProvider {
     )
 
     val modelSuzukiGsxR1000 = Model(
-        id = 1,
+        id = randomInt,
         name = "GSX-R1000",
         manufacturerId = 2,
         image = R.drawable.suzuki_model_gsx_r1000,
@@ -36,7 +44,7 @@ object MotorcycleProvider {
         year = "2023",
     )
     val modelSuzukiVStrom1050 = Model(
-        id = 2,
+        id = randomInt,
         name = "V Strom 1050",
         manufacturerId = 2,
         image = R.drawable.suzuki_model_v_strom_1050,
@@ -46,7 +54,7 @@ object MotorcycleProvider {
     )
 
     val modelYamahaMt09 = Model(
-        id = 1,
+        id = randomInt,
         name = "MT-09",
         manufacturerId = 3,
         image = R.drawable.yamaha_model_mt_09,
@@ -55,7 +63,7 @@ object MotorcycleProvider {
         year = "2022",
     )
     val modelYamahaYzfR1 = Model(
-        id = 2,
+        id = randomInt,
         name = "YZF-R1",
         manufacturerId = 3,
         image = R.drawable.yamaha_model_yzf_r1,
@@ -88,7 +96,7 @@ object MotorcycleProvider {
 
 
     val motorcycle1 = Motorcycle(
-        id = 1,
+        id = randomInt,
         manufacturer = manufacturerBmw,
         logo = R.drawable.manufact_logo_bmw,
         image = R.drawable.bmw_model_s1000rr,
@@ -96,7 +104,7 @@ object MotorcycleProvider {
     )
 
     val motorcycle2 = Motorcycle(
-        id = 2,
+        id = randomInt,
         manufacturer = manufacturerBmw,
         logo = R.drawable.manufact_logo_bmw,
         image = R.drawable.bmw_model_r1250gs,
@@ -104,7 +112,7 @@ object MotorcycleProvider {
     )
 
     val motorcycle3 = Motorcycle(
-        id = 2,
+        id = randomInt,
         manufacturer = manufacturerYamaha,
         logo = R.drawable.manufact_logo_yamaha,
         image = R.drawable.yamaha_model_yzf_r1,
@@ -112,7 +120,7 @@ object MotorcycleProvider {
     )
 
     val motorcycle4 = Motorcycle(
-        id = 3,
+        id = randomInt,
         manufacturer = manufacturerYamaha,
         logo = R.drawable.manufact_logo_yamaha,
         image = R.drawable.yamaha_model_yzf_r1,
@@ -120,7 +128,7 @@ object MotorcycleProvider {
     )
 
     val motorcycle5 = Motorcycle(
-        id = 4,
+        id = randomInt,
         manufacturer = manufacturerSuzuki,
         logo = R.drawable.manufact_logo_suzuki,
         image = R.drawable.suzuki_model_gsx_r1000,
@@ -128,7 +136,7 @@ object MotorcycleProvider {
     )
 
     val motorcycle6 = Motorcycle(
-        id = 5,
+        id = randomInt,
         manufacturer = manufacturerSuzuki,
         logo = R.drawable.manufact_logo_suzuki,
         image = R.drawable.suzuki_model_v_strom_1050,
@@ -144,91 +152,6 @@ object MotorcycleProvider {
             motorcycle5,
             motorcycle6
         )
-    }
-
-    fun createManufacturerListTestData(): List<Manufacturer> {
-        return listOf(
-            manufacturerBmw,
-            manufacturerSuzuki,
-            manufacturerYamaha,
-        )
-    }
-
-    fun createModelListTestData(manufacturerId: Int): List<Model> {
-        return when (manufacturerId) {
-            1 -> {
-                listOf(
-                    Model(
-                        id = 1,
-                        name = "S 1000 RR",
-                        manufacturerId = 1,
-                        image = R.drawable.bmw_model_s1000rr,
-                        type = "Sport",
-                        power = "205 hp",
-                        year = "2023",
-                    ),
-                    Model(
-                        id = 2,
-                        name = "R 1250 GS",
-                        manufacturerId = 1,
-                        image = R.drawable.bmw_model_r1250gs,
-                        type = "Adventure",
-                        power = "136 hp",
-                        year = "2022",
-                    )
-                )
-            }
-
-            2 -> {
-                listOf(
-                    Model(
-                        id = 1,
-                        name = "GSX-R1000",
-                        manufacturerId = 2,
-                        image = R.drawable.suzuki_model_gsx_r1000,
-                        type = "Sport",
-                        power = "199 hp",
-                        year = "2023",
-                    ),
-                    Model(
-                        id = 2,
-                        name = "V Strom 1050",
-                        manufacturerId = 2,
-                        image = R.drawable.suzuki_model_v_strom_1050,
-                        type = "Adventure",
-                        power = "107 hp",
-                        year = "2022",
-                    )
-                )
-            }
-
-            3 -> {
-                listOf(
-                    Model(
-                        id = 1,
-                        name = "MT-09",
-                        manufacturerId = 3,
-                        image = R.drawable.yamaha_model_mt_09,
-                        type = "Naked",
-                        power = "117 hp",
-                        year = "2022",
-                    ),
-                    Model(
-                        id = 2,
-                        name = "YZF-R1",
-                        manufacturerId = 3,
-                        image = R.drawable.yamaha_model_yzf_r1,
-                        type = "Sport",
-                        power = "200 hp",
-                        year = "2023",
-                    )
-                )
-            }
-
-            else -> {
-                emptyList()
-            }
-        }
     }
 
 }

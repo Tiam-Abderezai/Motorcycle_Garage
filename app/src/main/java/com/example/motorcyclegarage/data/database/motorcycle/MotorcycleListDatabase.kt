@@ -7,6 +7,6 @@ import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 
 @Database(entities = [Motorcycle::class], version = 1, exportSchema = false)
 @TypeConverters(MotorcycleTypeConverter::class)
-abstract class MotorcycleDatabase : RoomDatabase() {
-    abstract fun motorcycleDAO(): MotorcycleDAO
+abstract class MotorcycleListDatabase : RoomDatabase() {
+    abstract fun motorcycleListDAO(): MotorcycleListDAO
 }

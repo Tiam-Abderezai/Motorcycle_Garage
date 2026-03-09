@@ -17,7 +17,7 @@ import kotlinx.parcelize.Parcelize
 data class Motorcycle(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "motorcycleId")
-    val id: Int,
+    val id: Int = 0,
     @field:TypeConverters(MotorcycleTypeConverter::class)
     @ColumnInfo(name = "motorManufacturer")
     val manufacturer: Manufacturer,
