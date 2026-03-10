@@ -10,6 +10,7 @@ import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleTypeConverter
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 
 
 @Parcelize
@@ -61,8 +62,8 @@ data class Model(
     val type: String,
     @ColumnInfo(name = "modelPower")
     val power: String,
-    @ColumnInfo(name = "modelYear")
-    val year: String
+    @ColumnInfo(name = "modelDateCreated")
+    val dateCreated: LocalDate
 ) : Parcelable
 
 

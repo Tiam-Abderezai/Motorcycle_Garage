@@ -4,6 +4,7 @@ import com.example.motorcyclegarage.R
 import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Model
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
+import java.time.LocalDate
 
 object MotorcycleProvider {
     val modelBmwS100RR = Model(
@@ -13,7 +14,7 @@ object MotorcycleProvider {
         image = R.drawable.bmw_model_s1000rr,
         type = "Sport",
         power = "205 hp",
-        year = "2023",
+        dateCreated = LocalDate.of(2011, 1, 1),
     )
 
     val modelBmwR1250GS = Model(
@@ -23,7 +24,7 @@ object MotorcycleProvider {
         image = R.drawable.bmw_model_r1250gs,
         type = "Adventure",
         power = "136 hp",
-        year = "2022",
+        dateCreated = LocalDate.of(2017, 1, 1),
     )
 
     val modelSuzukiGsxR1000 = Model(
@@ -33,7 +34,7 @@ object MotorcycleProvider {
         image = R.drawable.suzuki_model_gsx_r1000,
         type = "Sport",
         power = "199 hp",
-        year = "2023",
+        dateCreated = LocalDate.of(2023, 1, 1),
     )
     val modelSuzukiVStrom1050 = Model(
         id = 2,
@@ -42,7 +43,7 @@ object MotorcycleProvider {
         image = R.drawable.suzuki_model_v_strom_1050,
         type = "Adventure",
         power = "107 hp",
-        year = "2022",
+        dateCreated = LocalDate.of(2018, 1, 1),
     )
 
     val modelYamahaMt09 = Model(
@@ -52,7 +53,7 @@ object MotorcycleProvider {
         image = R.drawable.yamaha_model_mt_09,
         type = "Naked",
         power = "117 hp",
-        year = "2022",
+        dateCreated = LocalDate.of(2020, 1, 1),
     )
     val modelYamahaYzfR1 = Model(
         id = 2,
@@ -61,7 +62,7 @@ object MotorcycleProvider {
         image = R.drawable.yamaha_model_yzf_r1,
         type = "Sport",
         power = "200 hp",
-        year = "2023",
+        dateCreated = LocalDate.of(2011, 1, 1),
     )
 
 
@@ -165,7 +166,7 @@ object MotorcycleProvider {
                         image = R.drawable.bmw_model_s1000rr,
                         type = "Sport",
                         power = "205 hp",
-                        year = "2023",
+                        dateCreated = LocalDate.of(2022, 1, 1),
                     ),
                     Model(
                         id = 2,
@@ -174,7 +175,7 @@ object MotorcycleProvider {
                         image = R.drawable.bmw_model_r1250gs,
                         type = "Adventure",
                         power = "136 hp",
-                        year = "2022",
+                        dateCreated = LocalDate.of(2002, 1, 1),
                     )
                 )
             }
@@ -188,7 +189,7 @@ object MotorcycleProvider {
                         image = R.drawable.suzuki_model_gsx_r1000,
                         type = "Sport",
                         power = "199 hp",
-                        year = "2023",
+                        dateCreated = LocalDate.of(2013, 1, 1),
                     ),
                     Model(
                         id = 2,
@@ -197,7 +198,7 @@ object MotorcycleProvider {
                         image = R.drawable.suzuki_model_v_strom_1050,
                         type = "Adventure",
                         power = "107 hp",
-                        year = "2022",
+                        dateCreated = LocalDate.of(2022, 1, 1),
                     )
                 )
             }
@@ -211,7 +212,7 @@ object MotorcycleProvider {
                         image = R.drawable.yamaha_model_mt_09,
                         type = "Naked",
                         power = "117 hp",
-                        year = "2022",
+                        dateCreated = LocalDate.of(2016, 1, 1),
                     ),
                     Model(
                         id = 2,
@@ -220,7 +221,7 @@ object MotorcycleProvider {
                         image = R.drawable.yamaha_model_yzf_r1,
                         type = "Sport",
                         power = "200 hp",
-                        year = "2023",
+                        dateCreated = LocalDate.of(2019, 1, 1),
                     )
                 )
             }

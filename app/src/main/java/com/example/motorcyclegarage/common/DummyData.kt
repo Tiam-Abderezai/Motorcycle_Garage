@@ -10,6 +10,7 @@ import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelSuzukiGsx
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelSuzukiVStrom1050
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelYamahaMt09
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelYamahaYzfR1
+import java.time.LocalDate
 
 val modelSuzukiGsxR1000Dummy = Model(
     id = 1,
@@ -18,7 +19,7 @@ val modelSuzukiGsxR1000Dummy = Model(
     image = R.drawable.suzuki_model_gsx_r1000,
     type = "Sport",
     power = "199 hp",
-    year = "2023",
+    dateCreated = LocalDate.of(2023, 1, 1),
 )
 val modelSuzukiVStrom1050Dummy = Model(
     id = 2,
@@ -27,7 +28,7 @@ val modelSuzukiVStrom1050Dummy = Model(
     image = R.drawable.suzuki_model_v_strom_1050,
     type = "Adventure",
     power = "107 hp",
-    year = "2022",
+    dateCreated = LocalDate.of(2022, 1, 1),
 )
 val manufacturerSuzukiDummy = Manufacturer(
     id = 2,

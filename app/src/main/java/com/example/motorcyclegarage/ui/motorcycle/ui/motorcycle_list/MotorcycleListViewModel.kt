@@ -50,6 +50,7 @@ class MotorcycleListViewModel(
                         val sortedMotorcycleList = motorList.sortedBy { it.manufacturer.id }
                         // Pass collected motorList to Complete UI state and post it to mutable state flow
                         logger.debug("getAllMotorcycles() - motorList.size: ${motorList.size}")
+
                         _state.value = MotorcycleListState.Complete(motorcycleList = sortedMotorcycleList)
                     }
             } catch (e: Exception) {

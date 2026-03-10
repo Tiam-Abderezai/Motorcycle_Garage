@@ -47,11 +47,15 @@ import com.example.motorcyclegarage.ui.dialog.AlertDialog
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListEvent
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.Period
 
 
 private var isDeleteClicked by mutableStateOf(false)
 private var selectedMotorcycleItem by mutableStateOf(motorcycleDummy)
+private var selectedModelIndex by mutableStateOf(0)
 
 private val logger: BaseLogger = FactoryLogger.getLoggerCompose("MotorcycleItemSection")
 
@@ -68,14 +72,13 @@ fun MotorcycleItemSection(
 ) {
     logger.debug("MotorcycleItemSection - Displaying motorcycle: ${motorcycle.manufacturer.name} ${motorcycle.model?.name}")
     var showDialog by remember { mutableStateOf(false) }
-
     // Staggered entrance animation delay based on index
-    val entranceDelay = index * 100L
-
+    val entranceDelay = 100L
+    selectedModelIndex = index
     // Animation state for initial appearance
     var isVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        kotlinx.coroutines.delay(entranceDelay)
+        delay(entranceDelay)
         isVisible = true
     }
 
@@ -107,7 +110,6 @@ fun MotorcycleItemSection(
         animationSpec = tween(durationMillis = 300),
         label = "contentScale"
     )
-
     Box(
         modifier = modifier
             .alpha(alpha)
@@ -169,93 +171,14 @@ fun MotorcycleItemSection(
                         selectedMotorcycleItem = motorcycle
                     }
                 )
-
-                // Text with staggered appearance
-                @Composable
-                fun AnimatedText(
-                    label: String,
-                    value: String,
-                    delay: Long,
-                    style: TextStyle
-                ) {
-                    var textVisible by remember { mutableStateOf(false) }
-                    LaunchedEffect(Unit) {
-                        kotlinx.coroutines.delay(entranceDelay + delay)
-                        textVisible = true
-                    }
-
-                    val textAlpha by animateFloatAsState(
-                        targetValue = if (textVisible) 1f else 0f,
-                        animationSpec = tween(durationMillis = 300),
-                        label = "${label}Text"
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .background(Color(0xFF535353)) // Todo Declare this into a variable
-                            .fillMaxWidth()
-
-                    ) {
-                        Text(
-                            color = Color.Cyan,
-                            text = label,
-                            style = style.copy(fontWeight = FontWeight.Bold),
-                            modifier = Modifier.alpha(textAlpha)
-                        )
-                        Text(
-                            color = Color.Yellow,
-                            text = "                          $value",
-                            style = style.copy(fontWeight = FontWeight.SemiBold),
-                            modifier = Modifier.alpha(textAlpha)
-                        )
-                    }
-                    Spacer(
-                        modifier = Modifier
-                            .background(Color.Gray)
-                            .fillMaxSize()
-                            .height(1.dp)
-                    )
-                }
-
-                AnimatedText(
-                    label = "Manufacturer:",
-                    value = motorcycle.manufacturer.name,
-                    delay = 100L,
-                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                )
-
-                AnimatedText(
-                    label = "Model:",
-                    value = motorcycle.model?.name ?: "",
-                    delay = 200L,
-                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                )
-
-                AnimatedText(
-                    label = "Year:",
-                    value = motorcycle.model?.year ?: "",
-                    delay = 300L,
-                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                )
-
-                AnimatedText(
-                    label = "Power:",
-                    value = motorcycle.model?.power ?: "",
-                    delay = 400L,
-                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                )
-
-                AnimatedText(
-                    label = "Type:",
-                    value = motorcycle.model?.type ?: "",
-                    delay = 500L,
-                    style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-                )
+                MotorcycleItemSectionMenu(motorcycle)
             }
 
-            if(showDialog && motorcycle.id == selectedMotorcycleItem.id) {
+            if (showDialog && motorcycle.id == selectedMotorcycleItem.id) {
                 AlertDialog(
-                    onDismissRequest = { showDialog = false },  // Called when user clicks outside dialog
+                    onDismissRequest = {
+                        showDialog = false
+                    },  // Called when user clicks outside dialog
                     onConfirmation = {
                         isDeleteClicked = true
                         // Add your confirmation action here
@@ -317,6 +240,99 @@ fun MotorcycleItemSection(
 }
 
 @Composable
+fun MotorcycleItemSectionMenu(motorcycle: Motorcycle) {
+    // Staggered entrance animation delay based on index
+    val entranceDelay = 100L
+
+    // Text with staggered appearance
+    @Composable
+    fun AnimatedText(
+        label: String,
+        value: String,
+        delay: Long,
+        style: TextStyle
+    ) {
+        var textVisible by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) {
+            delay(entranceDelay + delay)
+            textVisible = true
+        }
+
+        val textAlpha by animateFloatAsState(
+            targetValue = if (textVisible) 1f else 0f,
+            animationSpec = tween(durationMillis = 300),
+            label = "${label}Text"
+        )
+
+        Column(
+            modifier = Modifier
+                .background(Color(0xFF535353)) // Todo Declare this into a variable
+                .fillMaxWidth()
+
+        ) {
+            Text(
+                color = Color.Cyan,
+                text = label,
+                style = style.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.alpha(textAlpha)
+            )
+            Text(
+                color = Color.Yellow,
+                text = "                          $value",
+                style = style.copy(fontWeight = FontWeight.SemiBold),
+                modifier = Modifier.alpha(textAlpha)
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .background(Color.Gray)
+                .fillMaxSize()
+                .height(1.dp)
+        )
+    }
+    AnimatedText(
+        label = "Manufacturer:",
+        value = motorcycle.manufacturer.name,
+        delay = 100L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+
+    AnimatedText(
+        label = "Model:",
+        value = motorcycle.model?.name ?: "",
+        delay = 200L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+
+    AnimatedText(
+        label = "Created:",
+        value = motorcycle.model?.dateCreated.toString(), //Todo fix this null exception handling
+        delay = 300L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+
+    AnimatedText(
+        label = "Age:",
+        value = calculateAge(motorcycle.model!!.dateCreated).toString(), //Todo fix this null exception handling
+        delay = 300L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+
+    AnimatedText(
+        label = "Power:",
+        value = motorcycle.model?.power ?: "",
+        delay = 400L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+
+    AnimatedText(
+        label = "Type:",
+        value = motorcycle.model?.type ?: "",
+        delay = 500L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
+}
+@Composable
 fun ButtonDeleteMotorcycle(
     onClick: () -> Unit,
     modifier: Modifier
@@ -348,4 +364,10 @@ fun ButtonDeleteMotorcycle(
             contentDescription = "Delete"
         )
     }
+}
+
+private fun calculateAge(date: LocalDate): Int {
+    val birthDate = LocalDate.of(date.year, date.month, date.dayOfMonth)
+    val currentDate = LocalDate.now()
+    return Period.between(birthDate, currentDate).years
 }

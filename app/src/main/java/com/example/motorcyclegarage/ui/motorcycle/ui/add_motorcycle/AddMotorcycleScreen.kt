@@ -60,6 +60,8 @@ import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleL
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.Period
 
 
 private var isManufacturerItemClicked by mutableStateOf(false)
@@ -391,10 +393,17 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
             delay = 200L,
             style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
         )
-
         AnimatedText(
-            label = "Year:",
-            value = manufacturer.models[selectedModelIndex].year,
+            label = "Created:",
+            // Calculate the age from model dateCreated against current date
+            value = manufacturer.models[selectedModelIndex].dateCreated.toString(),
+            delay = 300L,
+            style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+        )
+        AnimatedText(
+            label = "Age:",
+            // Calculate the age from model dateCreated against current date
+            value = calculateAge(manufacturer.models[selectedModelIndex].dateCreated).toString(),
             delay = 300L,
             style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
         )
@@ -433,4 +442,10 @@ fun ButtonSaveMotorcycle(
             contentDescription = "Save"
         )
     }
+}
+
+private fun calculateAge(date: LocalDate): Int {
+    val birthDate = LocalDate.of(date.year, date.month, date.dayOfMonth)
+    val currentDate = LocalDate.now()
+    return Period.between(birthDate, currentDate).years
 }
