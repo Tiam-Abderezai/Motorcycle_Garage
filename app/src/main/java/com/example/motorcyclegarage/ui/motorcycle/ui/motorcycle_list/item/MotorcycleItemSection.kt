@@ -311,24 +311,24 @@ fun MotorcycleItemSectionMenu(motorcycle: Motorcycle) {
         style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
     )
 
-    AnimatedText(
-        label = "Age:",
-        value = calculateAge(motorcycle.model!!.dateCreated).toString(), //Todo fix this null exception handling
-        delay = 300L,
-        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-    )
+//    AnimatedText(
+//        label = "Age:",
+//        value = calculateAge(motorcycle.model?.dateCreated).toString(), //Todo fix this null exception handling
+//        delay = 400L,
+//        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+//    )
 
     AnimatedText(
         label = "Power:",
         value = motorcycle.model?.power ?: "",
-        delay = 400L,
+        delay = 500L,
         style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
     )
 
     AnimatedText(
         label = "Type:",
         value = motorcycle.model?.type ?: "",
-        delay = 500L,
+        delay = 600L,
         style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
     )
 }
