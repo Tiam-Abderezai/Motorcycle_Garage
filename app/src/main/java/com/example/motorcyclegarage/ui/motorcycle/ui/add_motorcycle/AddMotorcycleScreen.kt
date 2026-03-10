@@ -238,7 +238,7 @@ private fun SelectManufacturerMenu() {
         modifier = Modifier
             .background(Color.Gray)
             .fillMaxWidth()
-            .height(560.dp),
+            .height(640.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -360,7 +360,7 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
                     .width(162.dp)
             ) {
                 Text(
-                    color = Color.Blue,
+                    color = Color.Cyan,
                     text = label,
                     style = style.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.alpha(textAlpha)
