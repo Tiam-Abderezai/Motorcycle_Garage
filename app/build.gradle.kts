@@ -85,6 +85,7 @@ dependencies {
     androidTestImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     androidTestImplementation("com.google.truth:truth:1.1.5")
 //    androidTestImplementation("com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.1")
+    implementation("joda-time:joda-time:2.12.5")
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.room.runtime)

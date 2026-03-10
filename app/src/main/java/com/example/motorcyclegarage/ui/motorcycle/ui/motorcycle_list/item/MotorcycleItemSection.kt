@@ -44,14 +44,15 @@ import com.example.motorcyclegarage.common.motorcycleDummy
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.example.motorcyclegarage.ui.components.DeleteMessage
 import com.example.motorcyclegarage.ui.dialog.AlertDialog
+import com.example.motorcyclegarage.ui.motorcycle.ui.add_motorcycle.calculateAge
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListEvent
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.Period
-
+import org.joda.time.LocalDate
+import org.joda.time.Years
+import java.util.Date
 
 private var isDeleteClicked by mutableStateOf(false)
 private var selectedMotorcycleItem by mutableStateOf(motorcycleDummy)
@@ -243,6 +244,9 @@ fun MotorcycleItemSection(
 fun MotorcycleItemSectionMenu(motorcycle: Motorcycle) {
     // Staggered entrance animation delay based on index
     val entranceDelay = 100L
+    val yearLong = motorcycle.model?.dateCreated
+    val yearCreatedDate = yearLong?.let { LocalDate.fromDateFields(Date(it)) }
+    val yearAgeDate = yearCreatedDate?.let { calculateAge(it) }.toString()
 
     // Text with staggered appearance
     @Composable
@@ -304,19 +308,19 @@ fun MotorcycleItemSectionMenu(motorcycle: Motorcycle) {
         style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
     )
 
-//    AnimatedText(
-//        label = "Created:",
-//        value = motorcycle.model?.dateCreated.toString(), //Todo fix this null exception handling
-//        delay = 300L,
-//        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-//    )
+    AnimatedText(
+        label = "Created:",
+        value = yearCreatedDate?.year.toString(),
+        delay = 300L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
 
-//    AnimatedText(
-//        label = "Age:",
-//        value = calculateAge(motorcycle.model?.dateCreated).toString(), //Todo fix this null exception handling
-//        delay = 400L,
-//        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
-//    )
+    AnimatedText(
+        label = "Age:",
+        value = yearAgeDate,
+        delay = 400L,
+        style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+    )
 
     AnimatedText(
         label = "Power:",
@@ -366,8 +370,7 @@ fun ButtonDeleteMotorcycle(
     }
 }
 
-private fun calculateAge(date: LocalDate): Int {
-    val birthDate = LocalDate.of(date.year, date.month, date.dayOfMonth)
+fun calculateAge(date: LocalDate): Int {
     val currentDate = LocalDate.now()
-    return Period.between(birthDate, currentDate).years
+    return Years.yearsBetween(date, currentDate).years
 }

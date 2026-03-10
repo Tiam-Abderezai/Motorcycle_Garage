@@ -4,6 +4,7 @@ import com.example.motorcyclegarage.R
 import com.example.motorcyclegarage.data.model.motorcycle.Manufacturer
 import com.example.motorcyclegarage.data.model.motorcycle.Model
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
+import org.joda.time.LocalDate
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
@@ -11,7 +12,19 @@ object MotorcycleListTestData {
 
     private fun makeRandomString() = UUID.randomUUID().toString()
     private val randomInt = ThreadLocalRandom.current().nextInt(0, 1000 + 1)
+    val date2010 = LocalDate(2010, 3, 10)
+    val date2012 = LocalDate(2012, 7, 2)
+    val date2015 = LocalDate(2015, 1, 14)
+    val date2017 = LocalDate(2017, 11, 7)
+    val date2020 = LocalDate(2020, 2, 23)
+    val date2022 = LocalDate(2022, 9, 28)
 
+    val long2010: Long = date2010.toDateTimeAtStartOfDay().millis
+    val long2012: Long = date2012.toDateTimeAtStartOfDay().millis
+    val long2015: Long = date2015.toDateTimeAtStartOfDay().millis
+    val long2017: Long = date2017.toDateTimeAtStartOfDay().millis
+    val long2020: Long = date2020.toDateTimeAtStartOfDay().millis
+    val long2022: Long = date2022.toDateTimeAtStartOfDay().millis
     val modelBmwS100RR = Model(
         id = randomInt,
         name = "S 1000 RR",
@@ -19,7 +32,7 @@ object MotorcycleListTestData {
         image = R.drawable.bmw_model_s1000rr,
         type = "Sport",
         power = "205 hp",
-        year = "2023",
+        dateCreated = long2010,
     )
 
     val modelBmwR1250GS = Model(
@@ -29,7 +42,7 @@ object MotorcycleListTestData {
         image = R.drawable.bmw_model_r1250gs,
         type = "Adventure",
         power = "136 hp",
-        year = "2022",
+        dateCreated = long2012,
     )
 
     val modelSuzukiGsxR1000 = Model(
@@ -39,7 +52,7 @@ object MotorcycleListTestData {
         image = R.drawable.suzuki_model_gsx_r1000,
         type = "Sport",
         power = "199 hp",
-        year = "2023",
+        dateCreated = long2015,
     )
     val modelSuzukiVStrom1050 = Model(
         id = randomInt,
@@ -48,7 +61,7 @@ object MotorcycleListTestData {
         image = R.drawable.suzuki_model_v_strom_1050,
         type = "Adventure",
         power = "107 hp",
-        year = "2022",
+        dateCreated = long2017,
     )
 
     val modelYamahaMt09 = Model(
@@ -58,7 +71,7 @@ object MotorcycleListTestData {
         image = R.drawable.yamaha_model_mt_09,
         type = "Naked",
         power = "117 hp",
-        year = "2022",
+        dateCreated = long2020,
     )
     val modelYamahaYzfR1 = Model(
         id = randomInt,
@@ -67,7 +80,7 @@ object MotorcycleListTestData {
         image = R.drawable.yamaha_model_yzf_r1,
         type = "Sport",
         power = "200 hp",
-        year = "2023",
+        dateCreated = long2022,
     )
 
 

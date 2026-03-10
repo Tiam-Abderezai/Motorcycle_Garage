@@ -60,8 +60,9 @@ import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleL
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.Period
+import org.joda.time.LocalDate
+import org.joda.time.Years
+import java.util.Date
 
 
 private var isManufacturerItemClicked by mutableStateOf(false)
@@ -333,6 +334,11 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
     if (isModelClicked) {
         logger.debug("Displaying selected model details")
         val entranceDelay = 100L
+        // Convert collected Long date into LocalDate and into String calculated for age
+        // so year created and age are created separately and displayed in the model attributes
+        val yearLong = manufacturer.models?.get(selectedModelIndex)?.dateCreated
+        val yearCreatedDate = yearLong?.let { LocalDate.fromDateFields(Date(it)) }
+        val yearAgeDate = yearCreatedDate?.let { calculateAge(it) }.toString()
 
         // Text with staggered appearance
         @Composable
@@ -396,14 +402,15 @@ private fun SelectModelMenu(manufacturer: Manufacturer) {
         AnimatedText(
             label = "Created:",
             // Calculate the age from model dateCreated against current date
-            value = manufacturer.models[selectedModelIndex].dateCreated.toString(),
+            value = yearCreatedDate?.year.toString(),
             delay = 300L,
             style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
         )
+
         AnimatedText(
             label = "Age:",
             // Calculate the age from model dateCreated against current date
-            value = calculateAge(manufacturer.models[selectedModelIndex].dateCreated).toString(),
+            value = yearAgeDate,
             delay = 300L,
             style = TextStyle(fontSize = MaterialTheme.typography.bodyLarge.fontSize)
         )
@@ -444,8 +451,7 @@ fun ButtonSaveMotorcycle(
     }
 }
 
-private fun calculateAge(date: LocalDate): Int {
-    val birthDate = LocalDate.of(date.year, date.month, date.dayOfMonth)
+fun calculateAge(date: LocalDate): Int {
     val currentDate = LocalDate.now()
-    return Period.between(birthDate, currentDate).years
+    return Years.yearsBetween(date, currentDate).years
 }

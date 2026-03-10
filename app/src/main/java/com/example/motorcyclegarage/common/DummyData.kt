@@ -10,7 +10,21 @@ import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelSuzukiGsx
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelSuzukiVStrom1050
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelYamahaMt09
 import com.example.motorcyclegarage.motorcycle.MotorcycleProvider.modelYamahaYzfR1
-import java.time.LocalDate
+import org.joda.time.LocalDate
+
+val date2010 = LocalDate(2010, 3, 10)
+val date2012 = LocalDate(2012, 7, 2)
+val date2015 = LocalDate(2015, 1, 14)
+val date2017 = LocalDate(2017, 11, 7)
+val date2020 = LocalDate(2020, 2, 23)
+val date2022 = LocalDate(2022, 9, 28)
+
+val long2010: Long = date2010.toDateTimeAtStartOfDay().millis
+val long2012: Long = date2012.toDateTimeAtStartOfDay().millis
+val long2015: Long = date2015.toDateTimeAtStartOfDay().millis
+val long2017: Long = date2017.toDateTimeAtStartOfDay().millis
+val long2020: Long = date2020.toDateTimeAtStartOfDay().millis
+val long2022: Long = date2022.toDateTimeAtStartOfDay().millis
 
 val modelSuzukiGsxR1000Dummy = Model(
     id = 1,
@@ -19,7 +33,7 @@ val modelSuzukiGsxR1000Dummy = Model(
     image = R.drawable.suzuki_model_gsx_r1000,
     type = "Sport",
     power = "199 hp",
-    dateCreated = LocalDate.of(2023, 1, 1),
+    dateCreated = long2010,
 )
 val modelSuzukiVStrom1050Dummy = Model(
     id = 2,
@@ -28,7 +42,7 @@ val modelSuzukiVStrom1050Dummy = Model(
     image = R.drawable.suzuki_model_v_strom_1050,
     type = "Adventure",
     power = "107 hp",
-    dateCreated = LocalDate.of(2022, 1, 1),
+    dateCreated = long2012,
 )
 val manufacturerSuzukiDummy = Manufacturer(
     id = 2,
