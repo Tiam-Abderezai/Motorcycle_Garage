@@ -6,7 +6,9 @@ import com.example.motorcyclegarage.data.database.motorcycle.MotorcycleListDAO
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import kotlinx.coroutines.flow.Flow
 private val logger: BaseLogger = FactoryLogger.getLoggerKClass(MotorcycleListRepositoryImpl::class)
-
+/*
+MotorcycleListRepositoryImpl connects to MotorcycleDAO interface via Motorcycle interface
+*/
 class MotorcycleListRepositoryImpl(
     private val motorcycleListDao: MotorcycleListDAO,
 ) : MotorcycleListRepository {

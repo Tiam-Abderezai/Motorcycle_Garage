@@ -55,6 +55,8 @@ private var selectedMotorcycleItem by mutableStateOf(motorcycleDummy)
 
 private val logger: BaseLogger = FactoryLogger.getLoggerCompose("MotorcycleItemSection")
 
+// Hosted by MotorcycleListScreen(), MotorcycleItemSection() displays individual attributes of
+// MotorcycleItem() as well as handling delete button and alert dialog
 @Composable
 fun MotorcycleItemSection(
     modifier: Modifier,

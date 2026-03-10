@@ -72,7 +72,13 @@ private var selectedManufacturerIndex by mutableStateOf(0)
 private var selectedMotorcycleItem by mutableStateOf(motorcycleDummy)
 private val logger: BaseLogger = FactoryLogger.getLoggerCompose("AddMotorcycleScreen")
 
-
+/*AddMotorcycleScreen() acts as state-hoisting hub for the screen, where different states
+(Loading, Completed, Error, etc) and events (saveMotorcycleList) while each
+state and event is handled accordingly one at a time. This reduces side-effects in Compose and
+ensures UDF (Uni-Directional-Flow) principles, by simplifying the handling of different states
+of the screen, collected from the MotorcycleListViewModel, and events handled by the MotorcycleScreen()
+view.
+*/
 @Composable
 fun AddMotorcycleScreen(
     motorcycleListState: MotorcycleListState,
@@ -265,7 +271,7 @@ fun ManufacturerMenuItem(manufacturer: Manufacturer) {
             .height(2.dp)
     )
 
-    if (selectedManufacturerIndex == manufacturer.id && expandedItemIndex) {
+    if (selectedManufacturerIndex == manufacturer.id && expandedItemIndex) { // Todo improve this line
         logger.debug("Showing models for: ${manufacturer.name}")
         SelectModelMenu(manufacturer)
     }
@@ -275,7 +281,7 @@ fun ManufacturerMenuItem(manufacturer: Manufacturer) {
 private fun SelectModelMenu(manufacturer: Manufacturer) {
     logger.debug("SelectModelMenu - Manufacturer: ${manufacturer.name}")
 
-    LazyRow(
+    LazyRow(// Show the list of motorcycles horizontally.
         modifier = Modifier
             .background(Color.Blue)
             .width(480.dp)

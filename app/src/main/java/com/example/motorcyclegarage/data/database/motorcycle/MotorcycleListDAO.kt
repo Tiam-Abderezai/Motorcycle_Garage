@@ -1,17 +1,14 @@
 package com.example.motorcyclegarage.data.database.motorcycle
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
+// Send SQL insert and delete queries to Room database using table names and motorcycle id
 @Dao
 interface MotorcycleListDAO {
 

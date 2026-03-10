@@ -1,11 +1,9 @@
 package com.example.motorcyclegarage.ui.dialog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,16 +13,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.motorcyclegarage.R
 
 @Composable
 fun AlertDialog(
@@ -50,25 +45,26 @@ fun AlertDialog(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painterResource(id = alertDialogIcon),
+                        painterResource(id = alertDialogIcon), // alert dialog icon
                         contentDescription = "Delete",
                         modifier = Modifier.size(128.dp)
                     )
                 }
                 Text(
-                    text = alertDialogTitle,
+                    text = alertDialogTitle, // alert dialog title
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp),
                 )
 
                 Text(
-                    text = alertDialogDescription,
+                    text = alertDialogDescription, // alert dialog description
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 64.dp)
                 )
-                Row() {
+                Row {
+                    // Determine if the response is a yes or not, or simply an ok response
                     if(isConfirmationYesOrNo) {
                         Button(
                             onClick = { onConfirmation() },

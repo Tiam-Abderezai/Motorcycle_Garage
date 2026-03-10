@@ -7,6 +7,7 @@ import com.example.motorcyclegarage.data.model.motorcycle.Motorcycle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+// TypeConverter used to convert different objects to and from Json to persist as Room database entities
 object MotorcycleTypeConverter {
 
     private val gson = Gson()

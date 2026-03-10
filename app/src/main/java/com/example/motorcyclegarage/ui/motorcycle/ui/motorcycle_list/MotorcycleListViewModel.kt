@@ -1,8 +1,6 @@
 package com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list
 
 import androidx.annotation.VisibleForTesting
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.motorcyclegarage.common.logger.BaseLogger
@@ -15,18 +13,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 private val logger: BaseLogger = FactoryLogger.getLoggerKClass(MotorcycleListViewModel::class)
-
+/*
+MotorcycleListViewModel() is the business logic class that intermediates between the services like the
+repository and the views like composables and screens and uses states and events to respectively
+communicate states from services to views and events from views to services.
+* */
 class MotorcycleListViewModel(
     private val motorcycleListRepositoryImpl: MotorcycleListRepositoryImpl
 ) : ViewModel() {
+    // MotorcycleListStates that as state flow objects collect and emit motorcycle list data
+    // from the repository to the views and events from views to the repository.
 
-    private val isError: MutableState<Boolean> = mutableStateOf(false)
-    var isLoading: MutableState<Boolean> = mutableStateOf(false)
+    // _state denotes mutable state
     private val _state =
         MutableStateFlow<MotorcycleListState>(MotorcycleListState.Initial)
+    // state denotes immutable state
     val state: StateFlow<MotorcycleListState> = _state.asStateFlow()
 
-    fun handleMotorcycleListEvent(event: MotorcycleListEvent) {
+    fun handleMotorcycleListEvent(event: MotorcycleListEvent) { // Handle different events from views
         when (event) {
             is MotorcycleListEvent.GetMotorcycleList -> getAllMotorcycles()
             is MotorcycleListEvent.SaveMotorcycleItem -> saveMotorcycle(event.motorcycle)
@@ -38,6 +42,7 @@ class MotorcycleListViewModel(
     fun getAllMotorcycles() {
         viewModelScope.launch {
             try {
+                // Load the motorcyclelist from the MotorcycleListRepository
                 motorcycleListRepositoryImpl.allMotorcycles
                     // Collect from allMotorcycles repository-impl
                     .collect { motorList ->

@@ -20,12 +20,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -58,7 +53,13 @@ import kotlinx.coroutines.withContext
 private val logger: BaseLogger = FactoryLogger.getLoggerCompose("MotorcycleListScreen")
 
 private var isAddClicked by mutableStateOf(false)
-
+/*MotorcycleListScreen() acts as state-hoisting hub for the screen, where different states
+(Loading, Completed, Error, etc) and events (getMotorycleList, deleteMotorcycle, etc) while each
+state and event is handled accordingly one at a time. This reduces side-effects in Compose and
+ensures UDF (Uni-Directional-Flow) principles, by simplifying the handling of different states
+of the screen, collected from the MotorcycleListViewModel, and events handled by the MotorcycleScreen()
+view.
+*/
 @Composable
 fun MotorcycleListScreen(
     navController: NavHostController,
@@ -66,7 +67,7 @@ fun MotorcycleListScreen(
     motorcycleListEvent: suspend (MotorcycleListEvent) -> Unit
 ) {
     when (motorcycleListState) {
-        is MotorcycleListState.Initial -> {
+        is MotorcycleListState.Initial -> { // On Initial state, call GetMotorcycleList() event
             LaunchedEffect(Unit) {
                 withContext(Dispatchers.IO) {
                     motorcycleListEvent.invoke(
@@ -77,12 +78,12 @@ fun MotorcycleListScreen(
             }
         }
 
-        is MotorcycleListState.Loading -> {
+        is MotorcycleListState.Loading -> { // On Loading state, call LoadingScreen() composable
             LoadingScreen()
             logger.debug("${MotorcycleListState.Loading}")
         }
 
-        is MotorcycleListState.Empty -> {
+        is MotorcycleListState.Empty -> { // On Empty state, call MotorcycleListSection() composable
             EmptyMotorcycleList()
             MotorcycleListSection(
                 emptyList(),
@@ -93,12 +94,12 @@ fun MotorcycleListScreen(
             logger.debug("${MotorcycleListState.Empty}")
         }
 
-        is MotorcycleListState.Error -> {
+        is MotorcycleListState.Error -> { // On Error state, call ErrorMotorcycleList() composable
             ErrorMotrcycleList()
             logger.debug("MotorcycleListState.Error")
         }
 
-        is MotorcycleListState.Complete -> {
+        is MotorcycleListState.Complete -> { // On Complete state, call MotorcycleListSection() composable
             MotorcycleListSection(
                 motorcycleListState.motorcycleList,
                 motorcycleListState,
@@ -111,6 +112,10 @@ fun MotorcycleListScreen(
 
 }
 
+/* MotorcycleListSection() displays a list of motorcycles (if already saved) and each item can be
+selected and expanded to show its attributes like image, logo, and descriptions as well as a
+delete button that uses an alert dialog to ensure if user wants to delete the selected item.
+*/
 @Composable
 fun MotorcycleListSection(
     motorcycleList: List<Motorcycle>,
@@ -140,10 +145,11 @@ fun MotorcycleListSection(
             val listState = rememberLazyListState()
             val scope = rememberCoroutineScope()
 
-            LazyColumn(
+            LazyColumn( // Display MotorcycleList vertically
                 modifier = Modifier.fillMaxSize(),
                 state = listState
             ) {
+                // Iterate MotorcycleList and process index and motor of that list for each item
                 itemsIndexed(motorcycleList) { index, motor ->
                     // Staggered animation for each item
                     val delay = index * 100L
@@ -163,7 +169,7 @@ fun MotorcycleListSection(
                         targetValue = if (isVisible) 0.dp else 20.dp,
                         animationSpec = tween(durationMillis = 500)
                     )
-
+                    // Populate each MotorcycleItem with individual saved motorcycle attributes
                     MotorcycleItem(
                         modifier = Modifier
                             .graphicsLayer { this.alpha = alpha }
@@ -205,7 +211,7 @@ fun MotorcycleListSection(
                     scaleY = pulseScale
                 }
         ) {
-            ButtonAddMotorcycle {
+            ButtonAddMotorcycle { // When button clicked, can go to AddMotorcycleScreen()
                 isAddClicked = true
             }
         }
@@ -223,27 +229,8 @@ fun MotorcycleListSection(
     }
 }
 
-
-@ExperimentalMaterial3Api
 @Composable
-fun AppBar(title: String, imageVector: ImageVector, iconClickAction: () -> Unit) {
-    TopAppBar(
-        title = {
-            Text(
-                color = Color.White,
-                text = title
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { iconClickAction.invoke() }) {
-                Icon(imageVector = imageVector, contentDescription = "")
-            }
-        }
-    )
-}
-
-@Composable
-fun ButtonAddMotorcycle(
+fun ButtonAddMotorcycle( // Add Button used to go to AddMotorcycleScreen()
     onClick: () -> Unit
 ) {
     FloatingActionButton(

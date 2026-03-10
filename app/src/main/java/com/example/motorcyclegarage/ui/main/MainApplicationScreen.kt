@@ -12,9 +12,9 @@ import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleL
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListScreen
 import com.example.motorcyclegarage.ui.motorcycle.ui.motorcycle_list.MotorcycleListState
 
-/* The Main Screen is used to show all motorcycles the user has created.
-* It also is used to go to other screens like MotorcycleScreen, and to
-* add, delete, or edit motorcycle list items.
+/* MainApplicationScreen() is the entry Composable called by the MainActivity that hosts 2 main
+Composables and acts as the navigation hub of the app
+It is mainly used to display a list of motorcycles, and also to save and delete its items.
 * */
 
 private val logger: BaseLogger = FactoryLogger.getLoggerCompose("MainApplicationScreen")
@@ -24,11 +24,12 @@ fun MainApplicationScreen(
     motorcycleListState: MotorcycleListState,
     motorcycleListEvent: (event: MotorcycleListEvent) -> Unit
 ) {
-// Show the list of Motorcycles
     logger.debug("MainApplicationScreen()")
-    val navController = rememberNavController()
+    val navController = rememberNavController()// navController used to control the navigation
+    // Provide a place in the Compose hierarchy for self contained navigation to occur.
     NavHost(navController = navController, startDestination = Route.MotorcycleListScreen.name) {
         composable(route = Route.MotorcycleListScreen.name) {
+            // Show list of motorcycles and an add button used to go to AddMotorcycleScreen()
             MotorcycleListScreen(
                 navController = navController,
                 motorcycleListState = motorcycleListState,
@@ -36,6 +37,9 @@ fun MainApplicationScreen(
             )
         }
         composable(route = Route.AddMotorcycleScreen.name) {
+            // Show a list of manufacturers, each containing different motorcycle models to choose
+            // from and to display each of its attributes and to select them for saving into the
+            // motorcycle list
             AddMotorcycleScreen(
                 navController = navController,
                 motorcycleListState = motorcycleListState,
